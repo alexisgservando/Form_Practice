@@ -1,0 +1,44 @@
+package pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
+
+public class LoginPage 
+{
+	//WebDriver
+	WebDriver driver;
+	
+	//Locators
+	By loginHeader = By.cssSelector("h1[class='text-white text-center text-3xl p-3 m-3']");
+	By usernameField = By.xpath("//input[@name='username']");
+	
+	//Constructor
+	public LoginPage(WebDriver driver) 
+	{
+		this.driver = driver;
+	}
+	
+	//Methods
+	public void verifyLoginPageHeader()
+	{
+		String getHeaderText = driver.findElement(loginHeader).getText().trim();
+		System.out.println(getHeaderText);
+		Assert.assertEquals("Log in", getHeaderText);
+	}
+	
+	public void fillUsernameField(String username)
+	{
+		
+	}
+	
+	public void fillPasswordFied(String password)
+	{
+		
+	}
+	
+	public void clickSendButton()
+	{
+		
+	}
+}

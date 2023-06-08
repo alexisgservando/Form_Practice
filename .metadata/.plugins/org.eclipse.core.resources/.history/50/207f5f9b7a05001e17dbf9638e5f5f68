@@ -1,0 +1,133 @@
+package pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.testng.Assert;
+
+public class EvaluationPage
+{
+	// WebDriver
+	WebDriver driver;
+	WebElement element;
+	WebElement[] elements;
+
+	// Locators
+	By evaluationHeader = By.cssSelector("h1[class='text-center text-3xl p-3 m-3']");
+	By numbersInFirstGrid = By.xpath("//div[@class='grid grid-cols-4 gap-4 mt-4']");
+	By textFieldFor88Letters = By.cssSelector("textarea[placeholder='Text']");
+	By firstMathOperationString = By.xpath("//p[normalize-space()='47-202+127-140+197-73=?']");
+	By numbersInThirdGrid = By.cssSelector("body > div:nth-child(2) > form:nth-child(2) > div:nth-child(1) > div:nth-child(3) > div:nth-child(3) >");
+	
+	// Constructor
+	public EvaluationPage(WebDriver driver) 
+	{
+		this.driver = driver;
+	}
+	
+	// Methods
+	public void verifyEvaluationPageHeader()
+	{
+		element = driver.findElement(evaluationHeader);
+		String getHeaderText = element.getText().trim();
+		System.out.println(getHeaderText);
+		Assert.assertEquals("Test Automation", getHeaderText);
+	}
+	
+	// Method for First Grid - get the numbers from the grid and store them in an array || Consider 23 numbes in the grid; hence, the i <= 23
+	public WebElement[] getNumbersInGrid() 
+	{
+		elements = new WebElement[23]; // Array to store the WebElements
+		for (int i = 1; i <= 23; i++) {
+			element = driver.findElement(numbersInFirstGrid).findElement(By.xpath("./label[" + i + "]"));
+			elements[i - 1] = element; // Store the WebElement in the array
+			System.out.println(elements[i-1].getText());
+		}
+		return elements; // Return the array of WebElements
+	}
+	
+	// Method to run an array of numbers and determine if the numbers are multiple of 8 || Consider 23 numbes in the grid; hence, the i <= 23
+	public void multipleEight(WebElement[] numbers) 
+	{
+		for (int i = 1; i <= 23; i++) {
+			String numberText = numbers[i-1].getText();
+			int intValue = Integer.parseInt(numberText);
+			int number = intValue;
+			if (number % 8 == 0) {
+				//System.out.println("multiple of 8 " + intValue); 							//Uncomment to print the actual numbers multiple of 8
+				driver.findElement(numbersInFirstGrid).findElement(By.xpath("./label[" + i + "]")).click();
+			}
+		}
+	}
+	
+	// Method for Second Grid - Type a letter 88 times 
+	public void typeLetter88Times(String letter, String expectedCharacters)
+	{
+		for (int j = 0; j <= 88; j++) {
+			driver.findElement(textFieldFor88Letters).sendKeys(letter);
+		}
+		String actualText = driver.findElement(By.cssSelector("textarea[placeholder='Text']")).getAttribute("value");
+		Assert.assertTrue(actualText.contains(expectedCharacters), "Expected characters are not present in the text field");
+	}
+	
+	// Method for Third grid - get the text from the first math operation and solve the operation
+	public int solveFirstMathOperation()
+	{
+		WebElement arithmeticElement = driver.findElement(firstMathOperationString);
+        String arithmeticExpression = arithmeticElement.getText();
+
+        // Extract the arithmetic expression by removing the equals sign and question mark
+        String expression = arithmeticExpression.replace("=?", "");
+
+        // Remove any whitespace from the expression
+        expression = expression.replaceAll("\\s+", "");
+
+        // Split the expression by the arithmetic operators (+ and -)
+        String[] operands = expression.split("[\\+\\-]");
+
+        // Split the expression by the operators to get the operators themselves
+        String[] operators = expression.split("\\d+");
+
+        // Initialize the result with the first operand
+        int result = Integer.parseInt(operands[0]);
+
+        // Perform the arithmetic calculation
+        for (int i = 1; i < operands.length; i++) {
+            int operand = Integer.parseInt(operands[i]);
+            String operator = operators[i];
+
+            if (operator.equals("+")) {
+                result += operand;
+            } else if (operator.equals("-")) {
+                result -= operand;
+            }
+        }
+        System.out.println("RESULT: ----" +result);
+        return result;
+	}
+	
+	//Method for Third grid - run the grid, capture the numbers || Consider 10 numbes in the grid; hence, the i <= 10
+	public WebElement[] getNumbersInGrid2() 
+	{
+		elements = new WebElement[10]; // Array to store the WebElements
+		for (int i = 1; i <= 10; i++) {
+			WebElement element = driver.findElement(numbersInThirdGrid).findElement(By.cssSelector("label:nth-child(\"+i+\")"));
+			elements[i - 1] = element; // Store the WebElement in the array
+			System.out.println(elements[i-1].getText());
+		}
+		return elements; // Return the array of WebElements
+	}
+	
+	// Method for Third grid - compare the array of numbers against the given int value passed as parameters || Consider 10 numbes in the grid; hence, the i <= 10
+	public void compareNumbersAndClick(WebElement[] numbers, int result) 
+	{
+		for (int i = 1; i <= 10; i++) {
+			
+			String numberText = numbers[i-1].getText();
+			int intValue = Integer.parseInt(numberText);
+			if (intValue == result) {
+				driver.findElement(numbersInThirdGrid).findElement(By.cssSelector("label:nth-child(\"+i+\")")).click();
+			}
+		}
+	}
+}

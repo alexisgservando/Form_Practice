@@ -1,0 +1,27 @@
+package tests;
+
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+public class Automation_Test 
+{
+	@BeforeTest
+	public void setUpTest() 
+	{
+		
+	}
+	
+	@Test
+	public void test1()
+	{
+		
+	}
+	
+	@AfterTest
+	public void tearDown() 
+	{
+		driver.close();
+		driver.quit();
+	}
+}

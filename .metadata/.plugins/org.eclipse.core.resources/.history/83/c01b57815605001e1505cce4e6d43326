@@ -1,0 +1,48 @@
+package tests;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import pages.LoginPage;
+
+public class Automation_Test {
+	
+	WebDriver driver;
+	LoginPage loginPage;
+	
+	@BeforeTest
+	public void setUpTest() {
+		// Initializing the WebDriver
+		WebDriverManager.edgedriver().setup();
+		driver = new EdgeDriver();
+		driver.get("https://tasks.evalartapp.com/automatization/");
+		driver.manage().window().maximize();
+	}
+
+	@Test
+	public void test1() 
+	{
+		//Setting username and password variables
+		String user = "621826";
+		String pass = "10df2f32286b7120Mi00LTYyODEyNg==30e0c83e6c29f1c3";
+		
+		loginPage = new LoginPage(driver);
+		loginPage.verifyLoginPageHeader();
+		loginPage.fillUsernameField(user);
+		loginPage.fillPasswordFied(pass);
+		loginPage.clickSendButton();
+		
+		
+		
+		System.out.println("------END------");
+	}
+
+	@AfterTest
+	public void tearDown() {
+		//driver.close();
+		//driver.quit();
+	}
+}

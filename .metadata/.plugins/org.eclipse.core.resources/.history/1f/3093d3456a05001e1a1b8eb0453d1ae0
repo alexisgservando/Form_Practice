@@ -1,0 +1,58 @@
+package pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.testng.Assert;
+
+public class EvaluationPage
+{
+	// WebDriver
+	WebDriver driver;
+	WebElement element;
+	WebElement[] elements;
+
+	//Locators
+	By evaluationHeader = By.cssSelector("h1[class='text-center text-3xl p-3 m-3']");
+	By numbersInFirstGrid = By.xpath("//div[@class='grid grid-cols-4 gap-4 mt-4']");
+	
+	//Constructor
+	public EvaluationPage(WebDriver driver) 
+	{
+		this.driver = driver;
+	}
+	
+	//Methods
+	public void verifyEvaluationPageHeader()
+	{
+		element = driver.findElement(evaluationHeader);
+		String getHeaderText = element.getText().trim();
+		System.out.println(getHeaderText);
+		Assert.assertEquals("Test Automation", getHeaderText);
+	}
+	
+	public WebElement[] getNumbersInGrid() 
+	{
+		elements = new WebElement[23]; // Array to store the WebElements
+		for (int i = 1; i <= 23; i++) {
+			element = driver.findElement(numbersInFirstGrid).findElement(By.xpath("./label[" + i + "]"));
+			elements[i - 1] = element; // Store the WebElement in the array
+			System.out.println(elements[i-1].getText());
+		}
+		return elements; // Return the array of WebElements
+	}
+	
+	public void multipleEight(WebElement[] numbers) 
+	{
+		for (int i = 1; i <= 23; i++) {
+			String numberText = numbers[i-1].getText();
+			int intValue = Integer.parseInt(numberText);
+			int number = intValue;
+			if (number % 8 == 0) {
+				//System.out.println("multiple of 8 " + intValue); 							//Uncomment to print the actual numbers multiple of 8
+				driver.findElement(numbersInFirstGrid).findElement(By.xpath("./label[" + i + "]"));
+			}
+		}
+	}
+	
+}

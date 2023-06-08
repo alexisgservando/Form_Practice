@@ -1,0 +1,68 @@
+package pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.testng.Assert;
+
+public class EvaluationPage
+{
+	// WebDriver
+	WebDriver driver;
+	WebElement element;
+	WebElement[] elements;
+
+	//Locators
+	By evaluationHeader = By.cssSelector("h1[class='text-center text-3xl p-3 m-3']");
+	By numbersInFirstGrid = By.xpath("//div[@class='grid grid-cols-4 gap-4 mt-4']");
+	By textFieldFor88Letters = By.cssSelector("textarea[placeholder='Text']");
+	
+	//Constructor
+	public EvaluationPage(WebDriver driver) 
+	{
+		this.driver = driver;
+	}
+	
+	//Methods
+	public void verifyEvaluationPageHeader()
+	{
+		element = driver.findElement(evaluationHeader);
+		String getHeaderText = element.getText().trim();
+		System.out.println(getHeaderText);
+		Assert.assertEquals("Test Automation", getHeaderText);
+	}
+	
+	// Method for First Grid - get the numbers from the grid and store them in an array
+	public WebElement[] getNumbersInGrid() 
+	{
+		elements = new WebElement[23]; // Array to store the WebElements
+		for (int i = 1; i <= 23; i++) {
+			element = driver.findElement(numbersInFirstGrid).findElement(By.xpath("./label[" + i + "]"));
+			elements[i - 1] = element; // Store the WebElement in the array
+			System.out.println(elements[i-1].getText());
+		}
+		return elements; // Return the array of WebElements
+	}
+	
+	// Method to run an array of numbers and determine if the numbers are multiple of 8
+	public void multipleEight(WebElement[] numbers) 
+	{
+		for (int i = 1; i <= 23; i++) {
+			String numberText = numbers[i-1].getText();
+			int intValue = Integer.parseInt(numberText);
+			int number = intValue;
+			if (number % 8 == 0) {
+				//System.out.println("multiple of 8 " + intValue); 							//Uncomment to print the actual numbers multiple of 8
+				driver.findElement(numbersInFirstGrid).findElement(By.xpath("./label[" + i + "]")).click();
+			}
+		}
+	}
+	
+	//Method for Second Grid - Type a letter 88 times
+	public void typeLetter88Times(String letter)
+	{
+		for (int j = 0; j <= 88; j++) {
+			driver.findElement(textFieldFor88Letters).sendKeys(letter);
+		}
+	}
+}

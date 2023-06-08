@@ -1,0 +1,23 @@
+package pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
+public class LoginPage 
+{
+	WebDriver driver;
+	
+	By loginHeader = By.cssSelector("h1[class='text-white text-center text-3xl p-3 m-3']");
+	
+	public LoginPage(WebDriver driver) 
+	{
+		this.driver = driver;
+	}
+	
+	public void verifyLoginPageHeader()
+	{
+		String getHeaderText = driver.findElement(loginHeader).getText().trim();
+		assertEquals("Log in ", getHeaderText);
+	}
+
+}
